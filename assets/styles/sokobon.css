@@ -1,0 +1,11 @@
+._box_canvas {
+    align-items: center;
+    background-color: var(--g-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#_game_canvas {
+    border: 3px solid var(--g-2);
+}
