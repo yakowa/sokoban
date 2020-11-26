@@ -1,32 +1,255 @@
-function startGame() {
-    // Removing the restart button
-    // document.getElementById("restartButton").style.display = "none";
+var canvas = document.getElementById("play");
+var ctx = canvas.getContext("2d");
+var __version = "Indev b10";
 
+function menuMain() {
+
+    var image = new Image();
+    image.src = "assets/media/sokobon/mainMenu.png";
+
+    image.onload = function() {
+        ctx.drawImage(image, 0, 0, 900, 600);
+
+        ctx.fillStyle = "#1DB9B8";
+        ctx.font = "bold 50px Bahnschrift";
+        ctx.fillText("Sokobon", (canvas.width / 2) - 93, canvas.height / 3.5);
+
+        ctx.fillStyle = "#fff";
+        ctx.font = "30px Consolas";
+        ctx.fillText("Click to start.", (canvas.width / 2) - 110, canvas.height / 2);
+
+        ctx.fillStyle = "#fff";
+        ctx.font = "20px Consolas";
+        ctx.fillText("Made by Yako, All rights reserved.", canvas.width - 385, canvas.height - 20);
+
+        ctx.fillStyle = "#fff";
+        ctx.font = "20px Consolas";
+        ctx.fillText(__version, canvas.width / 100, canvas.height - 20);
+    }
+    document.getElementById("play").addEventListener("click", leaveMainMenu, false);
+}
+
+
+
+function leaveMainMenu() {
+    document.getElementById("play").removeEventListener("click", leaveMainMenu, false);
+    ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+    levelMenu(1);    
+}
+
+
+
+
+
+function levelMenu(pageI) {
+    var image = new Image();
+    image.src = "assets/media/sokobon/mainMenu.png";
+    var buttons = [];
+    var page = pageI;
+    var level = [{"name": "Level 1"}, {"name": "Level 2"}, {"name": "Level 3"}, {"name": "Level 4"}, {"name": "Level 5"}, {"name": "Level 6"}, {"name": "Level 7"}, {"name": "Level 8"}, {"name": "Level 9"}, {"name": "Level 10"}, {"name": "Level 11"}, {"name": "Level 12"}, {"name": "Level 13"}, {"name": "Level 14"}, {"name": "Level 15"}, {"name": "Level 16"}];
+    var levels = level.length;
+    var levelNames = [];
+    var minLvl = (12 * page) - 12;
+    var maxLvl = 12 * page;
+    var maxIter = levels;
+    var isPageFull = false;
+
+    image.onload = function() {
+        ctx.drawImage(image, 0, 0, 900, 600);
+        ctx.fillStyle = "#1DB9B8";
+        ctx.font = "bold 50px Bahnschrift";
+        ctx.fillText("Level Select", (canvas.width / 2) - 130, canvas.height / 6.5);
+
+
+        for (var i = 0; i < minLvl; i++) {
+            buttons.push(null)
+        }
+
+        for (var i = minLvl; i < maxLvl && i < maxIter; i++) {
+            if (i == (maxIter - 1)) {
+                isPageFull = true;
+            }
+            // Max horizontal rows, standard width and height
+            var ratioW = 4;
+            var width = 150;
+            var height = 100;
+            // If the first level in display
+            if (i == minLvl) {
+                var x = 38;
+                var y = 160 - (height / 2);
+            }
+            // If ready for a new row
+            else if (i == ratioW || i % ratioW == 0) {
+                var x = 38;
+                var y = buttons[i - 1].y + height + (height / 2);
+            }
+            // All other levels in display
+            else {
+                var x = buttons[i - 1].x + width + (width / 2);
+                var y = buttons[i - 1].y;
+            }
+            // Saving i for other functions
+            l = i;
+            // Saving the name of the current level to be rendered later
+            levelNames.push({"name": level[l].name, "x": x + 20, "y": y + (height / 2)});
+
+            // Drawing the outline
+            ctx.fillStyle = "black";
+            ctx.fillRect(x - 1, y - 1, width + 2, height + 2);
+
+            // Drawing the main button
+            var grd = ctx.createLinearGradient(0, 0, 200, 0);
+            grd.addColorStop(0, "#1952FF");
+            grd.addColorStop(1, "#1000FF");
+            ctx.fillStyle = grd;
+            ctx.fillRect(x, y, width, height)
+            // Saving the x, y, width, height and level number for use in the button listener
+            buttons.push({"x": x, "y": y, "width": width, "height": height, "index": i});
+        }
+        // Rendering the text after all buttons
+        ctx.fillStyle = "black";
+        ctx.font = "25px Consolas";
+        var nameLen = levelNames.length;
+        for (var i = 0; i < nameLen; i++) {
+            ctx.fillText(levelNames[i].name, levelNames[i].x, levelNames[i].y + 5);
+        }
+
+        // Rendering the page back button
+        ctx.fillStyle = "#1DB9B8";
+        ctx.fillRect(38, canvas.height - 15 - 50, 50, 50)
+        // Saving the x, y, widht, height and command for use in the button listener
+        buttons.push({"x": 38, "y": canvas.height - 15 - 50, "width": 50, "height": 50, "index": "<<<"});
+        
+        // Rendering the text on the back button
+        ctx.fillStyle = "black";
+        ctx.font = "25px Consolas";
+        ctx.fillText("<<<", 42, canvas.height - 35);
+
+        if (!isPageFull) {
+            // Rendering the page forward button
+            ctx.fillStyle = "#1DB9B8";
+            ctx.fillRect(canvas.width - 38 - 50, canvas.height - 15 - 50, 50, 50)
+            // Saving the x, y, widht, height and command for use in the button listener
+            buttons.push({"x": canvas.width - 38 - 50, "y": canvas.height - 15 - 50, "width": 50, "height": 50, "index": ">>>"});
+            // Rendering the text on the forward button
+            ctx.fillStyle = "black";
+            ctx.font = "25px Consolas";
+            ctx.fillText(">>>", canvas.width - 42 - 42, canvas.height - 35);
+        }
+
+    // End of background image's onload function
+    }
+    
+    // Adding an event listener for clicking
+    canvas.addEventListener("click", checkButtonPress, false);
+
+    // Handling all clicks while in the level select menu
+    function checkButtonPress(e) {
+        // For all buttons
+        var btnsLen = buttons.length;
+        for (var i = 0; i < btnsLen; i++) {
+            if (buttons[i] == null) {
+                continue;
+            }
+            // Calculating the x and y of the cursur on click
+            var {pageX, pageY} = e.touches ? e.touches[0] : e;
+            var xC = pageX - canvas.offsetLeft;
+            var yC = pageY - canvas.offsetTop;
+            // Getting the current button's x, y, widht, height
+            var x = buttons[i].x;
+            var y = buttons[i].y;
+            var width = buttons[i].width;
+            var height = buttons[i].height;
+            // If click on a button
+            if (xC > x && xC < x + width && yC > y && yC < y + height) {
+                // If click on foward page button
+                if (buttons[i].index == ">>>") {
+                    //  < levels
+                    if (page >= 1 && !(minLvl > levels)) {
+                        canvas.removeEventListener("click", checkButtonPress, false);
+                        levelMenu(page + 1);
+                        break;
+                    }
+                }
+                // // If click on backward page button
+                else if (buttons[i].index == "<<<") {
+                    if (page > 1) {
+                        canvas.removeEventListener("click", checkButtonPress, false);
+                        levelMenu(page - 1);
+                        break;
+                    }
+                    else if (page == 1) {
+                        canvas.removeEventListener("click", checkButtonPress, false);
+                        menuMain()
+                        break;
+                    }
+                }
+                // // If click on a play level button
+                else {
+                    startGame(buttons[i].index);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+ 
+
+
+
+function startGame(level) {
     // Creating component's used in the game
-    player = new component(66, 33, "assets/media/sokobon/player.png", 10, 10, 4, 3, "image");
-    entities = []
-    background = new component(800, 450, "assets/media/sokobon/background.png", 0, 0, 1, 1, "background");
-    score = new component("30px", "Consolas", "black", 600, 40, 1, 1, "text");
+    rawData = getLevel(level).map;
+    entities = [];
+    ratioW = 9;
+    ratioH = 6;
 
+    var rawDataLen = rawData.length;
+    for (var i = 0; i < rawDataLen; i++) {
+        var width = game.canvas.width / ratioW;
+        var height = game.canvas.height / ratioH;
+        if (i == 0) {
+            var x = 0;
+            var y = 0;
+        }
+        else if (i == ratioW || i % ratioW == 0) {
+            var x = 0;
+            var y = entities[i - 1].y + height;
+        }
+        else {
+            var x = entities[i - 1].x + width;
+            var y = entities[i - 1].y;
+        }
+        var asset = "";
+        switch(rawData[i]) {
+            case "a":
+                asset = "assets/media/sokobon/tiles/a.png";
+                break;
+            case "p":
+                asset = "assets/media/sokobon/tiles/p.png";
+                break;
+            case "e":
+                asset = "assets/media/sokobon/tiles/e.png";
+                break;
+            default:
+                asset = "assets/media/sokobon/tiles/error.png";
+        }
+
+        entities.push(new component(width, height, asset, x, y, width, height, "image"));
+    }
+    
     // Creating sound effects
-    crashSound = new sound("assets/media/sokobon/crash.wav");
-    // backgroundMusic = new sound("music.mp3");
-    // backgroundMusic.play();
+    // crashSound = new sound("assets/media/sokobon/crash.wav");
 
     // Starting the game
     game.start();
 }
 
-
-
 var game = {
     // Selecting the canvas
-    canvas : document.getElementById("_game_canvas"),
+    canvas : document.getElementById("play"),
     start : function() {
-        // Setting the canvas size
-        // this.canvas.width = 500;
-        // this.canvas.height = 900;
-
         // Getting the 2D context of the canvas
         this.context = this.canvas.getContext("2d");
         // Counting frames
@@ -42,7 +265,6 @@ var game = {
         window.addEventListener('keyup', function (e) {
             if (e.keyCode != 82 && e.keyCode != 17) {
                 game.keys[e.keyCode] = false;
-                player.image.src = "assets/media/sokobon/player.png";
             }
         })
     },
@@ -146,76 +368,16 @@ function everyinterval(n) {
     return false;
 }
 
-
-
 // Ran every 50ms
 function updateGameArea() {
+
     game.frames += 1;
 
     // Clear the canvas
     game.clear();
 
-    // Setting the html text
-    var textP = document.getElementById('coords');
-    textP.innerHTML = 'Co-ords: x:' + player.x + ' y:' + player.y;
-
-    // Background
-    background.x += -1;
-    if (background.type == "background") {
-        if (background.x == -(background.width)) {
-            background.x = 0;
-        }
+    var entitiesLen = entities.length;
+    for (var i = 0; i < entitiesLen; i++) {
+        entities[i].update()
     }
-    background.update()
-
-    // Player Movement and Input
-    // A:
-    if (game.keys && game.keys[65]) {player.x -= player.speedX; player.image.src = "assets/media/sokobon/player_active.png";}
-    // D
-    if (game.keys && game.keys[68]) {player.x += player.speedX; player.image.src = "assets/media/sokobon/player_active.png";}
-    // W
-    if (game.keys && game.keys[87]) {player.y -= player.speedY; player.image.src = "assets/media/sokobon/player_active.png";}
-    // S
-    if (game.keys && game.keys[83]) {player.y += player.speedY; player.image.src = "assets/media/sokobon/player_active.png";}
-    player.update();
-
-    // If the player goes outside the canvas
-    if (player.x < 0 || player.y < 0 || (player.x + player.width) > (game.canvas.width) || (player.y + player.height) > (game.canvas.height)) {
-        game.stop()
-    }
-
-    // Entity updates
-    var x, y;
-    if (game.frames == 1 || everyinterval(150)) {
-        x = game.canvas.width;
-        y = game.canvas.height - 200;
-
-        minHeight = 25;
-        maxHeight = 200;
-        height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-        minGap = 35;
-        maxGap = 200;
-        gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-        entities.push(new component(10, height, "green", x, 0, 1, 1));
-        entities.push(new component(10, x - height - gap, "green", x, height + gap, 1, 1));
-    }
-    for (i = 0; i < entities.length; i += 1) {
-        if ((entities[i].x + 15) - 1 <= 0) {
-            entities.splice(i, 1);
-
-        }
-        else {
-            entities[i].x -= entities[i].speedX;
-            entities[i].update();
-        }
-    }
-    for (i = 0; i < entities.length; i += 1) {
-        if (player.crashWith(entities[i])) {
-            crashSound.play()
-            game.stop();
-        }
-    }
-    // Updating the score
-    score.text = "SCORE: " + game.frames;
-    score.update();
 }
