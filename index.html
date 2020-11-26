@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yako Development Studios">
+    <meta name="keywords" content="YAKO, Yako, Yakowa, Yako Development Studios">
+    <meta name="author" content="Yakowa">
+    <link rel="canonical" href="https://yako.ie/"/>
+    <title>Sokobon</title>
+    <link rel="shortcut icon" href="assets/media/app.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/styles/navbar.css">
+    <script src="assets/js/themeChanger.js"></script>
+    <link rel="stylesheet" href="assets/styles/sokobon.css">
+</head>
+<body class="dark" onload="init(), menuMain()">
+    <!-- NAVBAR: -->
+    <!-- Desktop Version -->
+    <div class="nav-desktop">
+        <!-- Logo -->
+        <a class="nav-item nav-logo" href="index.html">
+            <img id="logo-desktop" src="assets/media/navbar/logo.png" alt="» Yako «">
+        </a>
+        <!-- Pages -->
+        <ul class="nav-item nav-list">
+            <li class="nav-list-item"><a href="about.html">About</a></li>
+            <li class="nav-list-item"><a href="projects.html">Projects</a></li>
+            <li class="nav-list-item"><a href="drones.html">Drones</a></li>
+            <li class="nav-list-item"><a href="more.html">More...</a></li>
+        </ul>
+        <!-- Extra Button -->
+        <ul class="nav-extra">
+            <!-- Search -->
+            <li class="search-list">
+                <form action="search.html" method="GET" enctype="multipart/form-data">
+                    <input type="text" name="q" id="search-bar" placeholder="Search Yako...">
+                </form>
+            </li>
+            <!-- Theme Changer -->
+            <li class="has-dropdown">
+                <a class="dropdown-button" href="#">
+                    <img class="nav-extra-theme nav-extra-icon" id="theme-desktop" src="assets/media/navbar/theme.png" alt="Theme">
+                </a>
+                <ul class="dropdown">
+                    <li class="dropdown-item">
+                        <a id="theme-light-button" href="#">Light</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a id="theme-dark-button" href="#">Dark</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Login Button -->
+            <li >
+                <a class="login-button" href="account.html">
+                    <img class="nav-extra-login nav-extra-icon" id="login-desktop" src="assets/media/navbar/login.png" alt="Sign in">
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Phone Version -->
+    <div class="nav-phone">
+        <!-- Dropdown - Phone Sidebar -->
+        <div class="nav-item-d-p has-dropdown-p">
+            <a class="dropdown-button-p" href="#">
+                <img class="dropdown-button-p" id="menu-phone" src="assets/media/navbar/menu.png" alt="Menu">
+            </a>
+            <ul class="dropdown-p">
+                <!-- Search -->
+                <form action="search.html" method="GET" enctype="multipart/form-data">
+                    <input type="text" name="q" id="search-bar" placeholder="Search Yako...">
+                </form>
+
+                <div class="dropdown-p-seperator"></div>
+
+                <ul>
+                    <!-- Pages -->
+                    <li class="dropdown-item-p">
+                        <p><strong>Quick Access:</strong></p>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a href="about.html">About</a>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a href="projects.html">Projects</a>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a href="drones.html">Drones</a>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a href="more.html">More...</a>
+                    </li>
+                </ul>
+
+                <div class="dropdown-p-seperator"></div>
+
+                <!-- Extra -->
+                <ul>
+                    <!-- Theme Changer -->
+                    <li class="dropdown-item-p">
+                        <p><strong>Theme:</strong></p>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a id="theme-light-button-p" href="#">Light</a>
+                    </li>
+                    <li class="dropdown-item-p">
+                        <a id="theme-dark-button-p" href="#">Dark</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+        <!-- Logo -->
+        <a class="nav-item-p" href="index.html">
+            <img id="logo-phone" src="assets/media/navbar/logo.png" alt="» Yako «">
+        </a>
+        <!-- Login Button -->
+        <a class="nav-item-p" href="account.html">
+            <img id="login-phone" src="assets/media/navbar/login.png" alt="Sign in">
+        </a>
+    </div>
+    <div class="nav-spacer"></div>
+    <!-- END OF NAVBAR -->
+
+
+    <div class="_box_canvas">
+        <canvas id="play" width="900px" height="600px"></canvas>
+    </div>
+    <script src="assets/js/sokobon/db.js"></script>
+    <script src="assets/js/sokobon/main.js"></script>
+
+    <!-- FOOTER: -->
+    <div class="nav-spacer"></div>
+    <div class="footer">
+        <strong>2020 © All Rights Reserved • <a class="footer-link" href="mailto:yakocontact@gmail.com" target="_blank">yakocontact@gmail.com</a> • <a class="footer-link" href="team.html">Our Team</a></strong>
+    </div>
+</body>
+</html>
