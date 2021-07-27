@@ -12,7 +12,7 @@ This is my take on the Sokoban puzzle game! Sokoban is a puzzle video game in wh
 
 ### How to play
 
-[Simply go to the live version on my website](https://jacobem.com/app/sokoban#play)
+[Simply go to the live version on my website](https://jacobem.com/app/sokoban)
 or [clone](https://github.com/yakowa/sokoban) this project on GitHub and view the index.html in your browser.
 
 ### Controls
